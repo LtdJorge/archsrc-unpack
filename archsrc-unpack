@@ -1,0 +1,19 @@
+#!/bin/sh
+#echo $0
+#echo $1
+mkdir temp-extract  > /dev/null
+pushd temp-extract  > /dev/null
+tar -zxf ../$1
+dir_list=$(echo */)
+extracted_dir_name=${dir_list%%/}
+rm -rf ../${extracted_dir_name}-tree
+pushd $extracted_dir_name > /dev/null
+pushd $extracted_dir_name > /dev/null
+last_commit=$(git log -n 1 --pretty=format:"%H")
+git worktree add wktree $last_commit > /dev/null
+mv wktree ../../../${extracted_dir_name}-tree
+popd > /dev/null
+popd > /dev/null
+popd > /dev/null
+echo "Your package has been extracted to ${extracted_dir_name}-tree"
+rm -rf temp-extract
